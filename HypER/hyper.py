@@ -137,7 +137,6 @@ class Experiment:
 
         for it in range(1, self.num_iterations+1):
             model.train()    
-            # start = time.time()
             losses = []
             np.random.shuffle(er_vocab_pairs)
             for j in range(0, len(er_vocab_pairs), self.batch_size):
@@ -160,12 +159,11 @@ class Experiment:
 
             print(it)    
             print(np.mean(losses))
-            # print(time.time()-start)
 
             model.eval()
             with torch.no_grad():
-                # print("Validation:")
-                # self.evaluate(model, d.valid_data)
+                print("Validation:")
+                self.evaluate(model, d.valid_data)
                 if not it%2:
                     print("Test:")
                     self.evaluate(model, d.test_data)
