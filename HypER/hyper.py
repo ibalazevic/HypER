@@ -104,7 +104,6 @@ class Experiment:
 
     def train_and_eval(self):
         print("Training the %s model..." % model_name)
-        output = {}
         self.entity_idxs = {d.entities[i]:i for i in range(len(d.entities))}
         self.relation_idxs = {d.relations[i]:i for i in range(len(d.relations))}
         train_data_idxs = self.get_data_idxs(d.train_data)
@@ -193,6 +192,3 @@ if __name__ == '__main__':
                             input_dropout=0.2, hidden_dropout=0.3, feature_map_dropout=0.2,
                             in_channels=1, out_channels=32, filt_h=1, filt_w=9, label_smoothing=0.1)
     experiment.train_and_eval()
-    with open("%s_%s.p" % (model_name, dataset), "wb") as f:
-        pickle.dump(output, f)
-    print("\n")
