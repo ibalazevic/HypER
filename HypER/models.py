@@ -182,6 +182,7 @@ class DistMult(torch.nn.Module):
         self.R = torch.nn.Embedding(len(d.relations), d2, padding_idx=0)
         self.inp_drop = torch.nn.Dropout(kwargs["input_dropout"])
         self.loss = torch.nn.BCELoss()
+        self.bn0 = torch.nn.BatchNorm1d(d1)
 
     def init(self):
         xavier_normal_(self.E.weight.data)
@@ -190,8 +191,8 @@ class DistMult(torch.nn.Module):
     def forward(self, e1_idx, r_idx):
         e1 = self.E(e1_idx)
         r = self.R(r_idx)
+        e1 = self.bn0(e1)
         e1 = self.inp_drop(e1)
-        r = self.inp_drop(r)
         pred = torch.mm(e1*r, self.E.weight.transpose(1,0))
         pred = F.sigmoid(pred)
         return pred
@@ -205,6 +206,8 @@ class ComplEx(torch.nn.Module):
         self.Ri = torch.nn.Embedding(len(d.relations), d2, padding_idx=0)
         self.inp_drop = torch.nn.Dropout(kwargs["input_dropout"])
         self.loss = torch.nn.BCELoss()
+        self.bn0 = torch.nn.BatchNorm1d(d1)
+        self.bn1 = torch.nn.BatchNorm1d(d1)
 
     def init(self):
         xavier_normal_(self.Er.weight.data)
@@ -217,10 +220,10 @@ class ComplEx(torch.nn.Module):
         rr = self.Rr(r_idx)
         e1i = self.Ei(e1_idx)
         ri = self.Ri(r_idx)
+        e1r = self.bn0(e1r)
         e1r = self.inp_drop(e1r)
-        rr = self.inp_drop(rr)
+        e1i = self.bn1(e1i)
         e1i = self.inp_drop(e1i)
-        ri = self.inp_drop(ri)
         pred = torch.mm(e1r*rr, self.Er.weight.transpose(1,0)) +\
                torch.mm(e1r*ri, self.Ei.weight.transpose(1,0)) +\
                torch.mm(e1i*rr, self.Ei.weight.transpose(1,0)) -\
