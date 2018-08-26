@@ -85,7 +85,7 @@ class HypER(torch.nn.Module):
 
 
     def forward(self, e1_idx, r_idx):
-        e1 = self.E(e1_idx).view(-1, 1, 1, 200)
+        e1 = self.E(e1_idx).view(-1, 1, 1, self.E.weight.size(1))
         r = self.R(r_idx)
         x = self.bn0(e1)
         x = self.inp_drop(x)
@@ -103,7 +103,6 @@ class HypER(torch.nn.Module):
         x = x.permute(0, 3, 1, 2).contiguous()
        
         x = self.bn1(x)
-        x = F.relu(x)
         x = self.feature_map_drop(x) 
         x = x.view(e1.size(0), -1)
         x = self.fc(x)
