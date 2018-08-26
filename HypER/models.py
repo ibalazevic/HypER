@@ -161,7 +161,6 @@ class HypE(torch.nn.Module):
         x = x.permute(0, 3, 1, 2).contiguous()
        
         x = self.bn1(x)
-        x = F.relu(x)
         x = self.feature_map_drop(x) 
         x = x.view(e1.size(0), -1) 
         x = self.fc(x)
