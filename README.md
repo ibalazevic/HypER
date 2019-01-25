@@ -5,7 +5,7 @@ This repository contains code for the paper [Hypernetwork Knowledge Graph Embedd
 
 ### Running a model
 
-`CUDA_VISIBLE_DEVICES=0 python hyper.py --algorithm HypER dataset FB15k-237`
+`CUDA_VISIBLE_DEVICES=0 python hyper.py --algorithm HypER --dataset FB15k-237`
 
 This will run the HypER model on FB15k-237.
 
