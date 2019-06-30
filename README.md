@@ -54,9 +54,9 @@ The codebase is implemented in Python 3.6.6. Required packages are:
 
 If you found this codebase useful, please cite:
 
-    @article{balazevic2018hypernetwork,
+    @article{balazevic2019hypernetwork,
     title={Hypernetwork Knowledge Graph Embeddings},
     author={Bala\v{z}evi\'c, Ivana and Allen, Carl and Hospedales, Timothy M},
-    journal={arXiv preprint arXiv:1808.07018},
-    year={2018}
+    journal={International Conference on Artificial Neural Networks},
+    year={2019}
     }
