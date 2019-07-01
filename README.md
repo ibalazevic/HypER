@@ -9,7 +9,7 @@ This codebase contains PyTorch implementation of the paper:
 
 > Hypernetwork Knowledge Graph Embeddings.
 > Ivana Balažević, Carl Allen, and Timothy M. Hospedales.
-> arXiv preprint arXiv:1808.07018, 2018.
+> International Conference on Artificial Neural Networks, 2019.
 > [[Paper]](https://arxiv.org/pdf/1808.07018.pdf)
 
 ### Running a model
