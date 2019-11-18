@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-from torch.nn import functional as F, Parameter
+from torch.nn import Parameter
 from torch.nn.init import xavier_normal_, xavier_uniform_
 
 
@@ -41,16 +41,16 @@ class ConvE(torch.nn.Module):
         x= self.inp_drop(x)
         x= self.conv1(x)
         x= self.bn1(x)
-        x= F.relu(x)
+        x= torch.relu(x)
         x = self.feature_map_drop(x)
         x = x.view(e1.size(0), -1)
         x = self.fc(x)
         x = self.hidden_drop(x)
         x = self.bn2(x)
-        x = F.relu(x)
+        x = torch.relu(x)
         x = torch.mm(x, self.E.weight.transpose(1,0))
         x += self.b.expand_as(x)
-        pred = F.sigmoid(x)
+        pred = torch.sigmoid(x)
         return pred
 
 
@@ -96,7 +96,7 @@ class HypER(torch.nn.Module):
 
         x = x.permute(1, 0, 2, 3)
 
-        x = F.conv2d(x, k, groups=e1.size(0))
+        x = torch.conv2d(x, k, groups=e1.size(0))
         x = x.view(e1.size(0), 1, self.out_channels, 1-self.filt_h+1, e1.size(3)-self.filt_w+1)
         x = x.permute(0, 3, 4, 1, 2)
         x = torch.sum(x, dim=3)
@@ -108,10 +108,10 @@ class HypER(torch.nn.Module):
         x = self.fc(x)
         x = self.hidden_drop(x)
         x = self.bn2(x)
-        x = F.relu(x) 
+        x = torch.relu(x)
         x = torch.mm(x, self.E.weight.transpose(1,0))
         x += self.b.expand_as(x)
-        pred = F.sigmoid(x)
+        pred = torch.sigmoid(x)
         return pred
 
 class HypE(torch.nn.Module):
@@ -154,7 +154,7 @@ class HypE(torch.nn.Module):
 
         x = x.permute(1, 0, 2, 3)
 
-        x = F.conv2d(x, k, groups=e1.size(0))
+        x = torch.conv2d(x, k, groups=e1.size(0))
         x = x.view(e1.size(0), 1, self.out_channels, 10-self.filt_h+1, 20-self.filt_w+1)
         x = x.permute(0, 3, 4, 1, 2)
         x = torch.sum(x, dim=3)
@@ -166,10 +166,10 @@ class HypE(torch.nn.Module):
         x = self.fc(x)
         x = self.hidden_drop(x)
         x = self.bn2(x)
-        x = F.relu(x) 
+        x = torch.relu(x)
         x = torch.mm(x, self.E.weight.transpose(1,0))
         x += self.b.expand_as(x)
-        pred = F.sigmoid(x)
+        pred = torch.sigmoid(x)
         return pred
 
 
@@ -192,7 +192,7 @@ class DistMult(torch.nn.Module):
         e1 = self.bn0(e1)
         e1 = self.inp_drop(e1)
         pred = torch.mm(e1*r, self.E.weight.transpose(1,0))
-        pred = F.sigmoid(pred)
+        pred = torch.sigmoid(pred)
         return pred
 
 class ComplEx(torch.nn.Module):
@@ -226,6 +226,6 @@ class ComplEx(torch.nn.Module):
                torch.mm(e1r*ri, self.Ei.weight.transpose(1,0)) +\
                torch.mm(e1i*rr, self.Ei.weight.transpose(1,0)) -\
                torch.mm(e1i*ri, self.Er.weight.transpose(1,0))
-        pred = F.sigmoid(pred)
+        pred = torch.sigmoid(pred)
         return pred
 
